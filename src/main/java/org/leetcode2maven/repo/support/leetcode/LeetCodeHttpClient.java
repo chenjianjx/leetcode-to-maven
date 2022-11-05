@@ -1,4 +1,4 @@
-package org.leetcode2maven.repo.support;
+package org.leetcode2maven.repo.support.leetcode;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

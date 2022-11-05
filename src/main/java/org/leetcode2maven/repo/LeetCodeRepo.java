@@ -3,7 +3,7 @@ package org.leetcode2maven.repo;
 import org.leetcode2maven.model.Question;
 import org.leetcode2maven.repo.dataobject.graphql.QuestionNode;
 import org.leetcode2maven.repo.dataobject.restful.ProblemsResponse;
-import org.leetcode2maven.repo.support.LeetCodeHttpClient;
+import org.leetcode2maven.repo.support.leetcode.LeetCodeHttpClient;
 
 import java.util.HashMap;
 import java.util.Map;

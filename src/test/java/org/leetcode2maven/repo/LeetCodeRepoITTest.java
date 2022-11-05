@@ -2,7 +2,7 @@ package org.leetcode2maven.repo;
 
 import org.junit.jupiter.api.Test;
 import org.leetcode2maven.model.Question;
-import org.leetcode2maven.repo.support.LeetCodeHttpClient;
+import org.leetcode2maven.repo.support.leetcode.LeetCodeHttpClient;
 
 import static org.junit.jupiter.api.Assertions.*;
 
