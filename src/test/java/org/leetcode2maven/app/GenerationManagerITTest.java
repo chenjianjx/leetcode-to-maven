@@ -4,7 +4,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.leetcode2maven.biz.FileBiz;
 import org.leetcode2maven.biz.LeetCodeBiz;
+import org.leetcode2maven.biz.support.file.FreemarkerTemplateFactory;
 import org.leetcode2maven.repo.FileRepo;
 import org.leetcode2maven.repo.LeetCodeRepo;
 import org.leetcode2maven.repo.support.leetcode.LeetCodeHttpClient;
@@ -15,6 +17,7 @@ import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.leetcode2maven.global.GlobalConstants.DEFAULT_CHARSET;
 
 class GenerationManagerITTest {
 
@@ -26,7 +29,8 @@ class GenerationManagerITTest {
         LeetCodeBiz leetCodeBiz = new LeetCodeBiz();
         LeetCodeRepo leetCodeRepo = new LeetCodeRepo(new LeetCodeHttpClient());
         FileRepo fileRepo = new FileRepo();
-        generationManager = new GenerationManager(leetCodeBiz, leetCodeRepo, fileRepo);
+        FileBiz fileBiz = new FileBiz(new FreemarkerTemplateFactory());
+        generationManager = new GenerationManager(leetCodeBiz, fileBiz, leetCodeRepo, fileRepo);
     }
 
     @Test
@@ -37,11 +41,18 @@ class GenerationManagerITTest {
 
         generationManager.generateMavenProject(1, dir);
 
+        File pomFile = new File(dir, "pom.xml");
+        assertTrue(pomFile.exists());
+        assertEquals(
+                IOUtils.toString(this.getClass().getResource("/leetcode-1-pom.txt"), DEFAULT_CHARSET),
+                FileUtils.readFileToString(pomFile, DEFAULT_CHARSET)
+        );
+
         File solutionFile = new File(dir, "src/main/java/Solution.java");
         assertTrue(solutionFile.exists());
         assertEquals(
-                IOUtils.toString(this.getClass().getResource("/leetcode-1-code-snippet.txt"), "UTF8"),
-                FileUtils.readFileToString(solutionFile, "UTF8")
+                IOUtils.toString(this.getClass().getResource("/leetcode-1-code-snippet.txt"), DEFAULT_CHARSET),
+                FileUtils.readFileToString(solutionFile, DEFAULT_CHARSET)
         );
 
 
