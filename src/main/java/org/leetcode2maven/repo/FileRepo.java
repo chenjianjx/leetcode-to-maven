@@ -2,6 +2,7 @@ package org.leetcode2maven.repo;
 
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,5 +25,11 @@ public class FileRepo {
     public void savePomFile(File projectDir, String content) throws IOException {
         File pomFile = new File(projectDir, "pom.xml");
         FileUtils.write(pomFile, content, DEFAULT_CHARSET);
+    }
+
+    public void saveNotesFile(File projectDir) throws IOException {
+        File destin = new File(projectDir, "notes.md");
+        IOUtils.copy(this.getClass().getResource("/maven-project-template/notes.md"), destin);
+
     }
 }

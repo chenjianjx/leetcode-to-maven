@@ -56,5 +56,8 @@ class GenerationManagerITTest {
         );
 
 
+        File notesFile = new File(dir, "notes.md");
+        assertTrue(notesFile.exists());
+
     }
 }

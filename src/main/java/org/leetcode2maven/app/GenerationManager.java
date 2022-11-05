@@ -39,6 +39,8 @@ public class GenerationManager {
         String className = leetCodeBiz.extractClassName(javaCode);
         fileRepo.saveSolutionClass(projectDir, className, javaCode);
 
+        fileRepo.saveNotesFile(projectDir);
+
     }
 
     private static void validate(int questionId, File projectDir) {
