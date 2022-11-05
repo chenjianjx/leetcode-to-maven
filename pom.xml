@@ -8,5 +8,62 @@
     <artifactId>leetcode-to-maven</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <graphql-maven-plugin.version>1.18</graphql-maven-plugin.version>
+    </properties>
+
+    <dependencies>
+        <!-- Dependencies for GraphQL -->
+        <dependency>
+            <groupId>com.graphql-java-generator</groupId>
+            <artifactId>graphql-java-runtime</artifactId>
+            <version>${graphql-maven-plugin.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+                <groupId>com.graphql-java-generator</groupId>
+                <artifactId>graphql-maven-plugin</artifactId>
+                <version>${graphql-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateClientCode</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <packageName>org.leetcode2maven.graphqlclient</packageName>
+                    <customScalars>
+                        <customScalar>
+                            <graphQLTypeName>Date</graphQLTypeName>
+                            <javaType>java.util.Date</javaType>
+                            <graphQLScalarTypeStaticField>
+                                com.graphql_java_generator.customscalars.GraphQLScalarTypeDate.Date
+                            </graphQLScalarTypeStaticField>
+                        </customScalar>
+                    </customScalars>
+                    <!-- The parameters below change the 1.x default behavior to respect the future 2.x behavior -->
+                    <copyRuntimeSources>false</copyRuntimeSources>
+                    <generateDeprecatedRequestResponse>false</generateDeprecatedRequestResponse>
+                    <separateUtilityClasses>true</separateUtilityClasses>
+                    <skipGenerationIfSchemaHasNotChanged>true</skipGenerationIfSchemaHasNotChanged>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 
 </project>
