@@ -6,4 +6,5 @@ import lombok.Data;
 public class Question {
     private int questionId;
     private String titleSlug;
+    private String javaCode;
 }

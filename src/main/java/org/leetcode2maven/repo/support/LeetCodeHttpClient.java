@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import org.leetcode2maven.repo.dataobject.GraphQLQueryRequest;
+import org.leetcode2maven.repo.dataobject.graphql.QueryRequest;
 
 import java.util.Map;
 
@@ -22,7 +22,7 @@ public class LeetCodeHttpClient {
 
     public <T> T graphQLQuery(String query, Map<String, Object> variables, Class<T> responseClass) {
 
-        GraphQLQueryRequest payload = new GraphQLQueryRequest();
+        QueryRequest payload = new QueryRequest();
         payload.setQuery(query);
         payload.setVariables(variables);
 

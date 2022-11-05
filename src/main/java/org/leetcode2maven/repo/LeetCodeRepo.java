@@ -1,7 +1,8 @@
 package org.leetcode2maven.repo;
 
 import org.leetcode2maven.model.Question;
-import org.leetcode2maven.repo.dataobject.RestfulProblemsResponse;
+import org.leetcode2maven.repo.dataobject.graphql.QuestionNode;
+import org.leetcode2maven.repo.dataobject.restful.ProblemsResponse;
 import org.leetcode2maven.repo.support.LeetCodeHttpClient;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class LeetCodeRepo {
 
     //TODO: periodically refresh
     private void refreshTitleSlugAndIdMap() {
-        RestfulProblemsResponse rawResponse = leetCodeHttpClient.doGet("/api/problems/all/", RestfulProblemsResponse.class);
+        ProblemsResponse rawResponse = leetCodeHttpClient.doGet("/api/problems/all/", ProblemsResponse.class);
 
         Map<Integer, String> newMap = rawResponse.getStat_status_pairs().stream().collect(Collectors.toMap(
                 pair -> pair.getStat().getQuestion_id(),
@@ -46,13 +47,23 @@ public class LeetCodeRepo {
 
     private Question getQuestionByTitleSlug(String titleSlug) {
 
-        String query = "query questionData($titleSlug: String!) { question(titleSlug: $titleSlug) {questionId titleSlug  __typename  }}";
+        String query = "query questionData($titleSlug: String!) { question(titleSlug: $titleSlug) {questionId titleSlug codeSnippets{langSlug code}} }";
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("titleSlug", titleSlug);
 
-        return leetCodeHttpClient.graphQLQuery(query, variables, Question.class);
+        QuestionNode questionNode = leetCodeHttpClient.graphQLQuery(query, variables, QuestionNode.class);
+        return toModel(questionNode);
 
+    }
+
+    private Question toModel(QuestionNode questionNode) {
+        Question question = new Question();
+        question.setQuestionId(questionNode.getQuestionId());
+        question.setTitleSlug(questionNode.getTitleSlug());
+        String javaCode = questionNode.getCodeSnippets().stream().filter(cs -> cs.getLangSlug().equals("java")).findFirst().get().getCode();
+        question.setJavaCode(javaCode);
+        return question;
     }
 
 }

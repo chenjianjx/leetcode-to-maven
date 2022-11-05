@@ -15,5 +15,6 @@ class LeetCodeRepoITTest {
         Question question = repo.getQuestionById(1);
         assertEquals(1, question.getQuestionId());
         assertEquals("two-sum", question.getTitleSlug());
+        assertEquals( "class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        \n    }\n}", question.getJavaCode());
     }
 }

@@ -1,4 +1,4 @@
-package org.leetcode2maven.repo.dataobject;
+package org.leetcode2maven.repo.dataobject.restful;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * The result of https://leetcode.com/api/problems/all/
  */
 @Data
-public class RestfulProblemsResponse {
+public class ProblemsResponse {
 
     private List<StatStatusPair> stat_status_pairs;
 
