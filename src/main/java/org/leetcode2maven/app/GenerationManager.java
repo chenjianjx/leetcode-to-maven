@@ -3,6 +3,7 @@ package org.leetcode2maven.app;
 import org.leetcode2maven.biz.FileBiz;
 import org.leetcode2maven.biz.LeetCodeBiz;
 import org.leetcode2maven.biz.dto.leetcode.LeetCodeSnippetParseResult;
+import org.leetcode2maven.biz.dto.leetcode.SingleClassCode;
 import org.leetcode2maven.model.Question;
 import org.leetcode2maven.repo.FileRepo;
 import org.leetcode2maven.repo.LeetCodeRepo;
@@ -10,6 +11,9 @@ import org.leetcode2maven.repo.LeetCodeRepo;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Please use {@link GenerationManagerFactory#newInstance()} to create an instance
+ */
 public class GenerationManager {
 
     private final LeetCodeBiz leetCodeBiz;
@@ -49,11 +53,13 @@ public class GenerationManager {
 
         String codeSnippet = question.getJavaCode();
         LeetCodeSnippetParseResult parseResult = leetCodeBiz.parseCodeSnippet(codeSnippet);
+        SingleClassCode unitTestCode = leetCodeBiz.buildUnitTestCode(parseResult, question);
+
         fileRepo.saveSolutionClass(projectDir, parseResult.getClassName(), parseResult.getSource());
         if(parseResult.hasSupportingClass()){
             fileRepo.saveSupportingClass(projectDir, parseResult.getSupportingClassName(), parseResult.getSupportingClassSource());
         }
-
+        fileRepo.saveUnitTestClass(projectDir, unitTestCode.getClassName(), unitTestCode.getSource());
         fileRepo.saveNotesFile(projectDir);
 
         return projectDir;

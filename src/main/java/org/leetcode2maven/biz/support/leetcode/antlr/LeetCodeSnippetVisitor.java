@@ -3,10 +3,14 @@ package org.leetcode2maven.biz.support.leetcode.antlr;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.TokenStreamRewriter;
+import org.leetcode2maven.model.MethodSignature;
 import org.leetode2maven.biz.support.antlr.Java8BaseVisitor;
 import org.leetode2maven.biz.support.antlr.Java8Parser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.leetcode2maven.biz.LeetCodeBiz.PUBLIC_CLASS_DECLARE_LINE_REGEX;
 
@@ -17,6 +21,7 @@ public class LeetCodeSnippetVisitor extends Java8BaseVisitor {
 
 
     private String className;
+    private MethodSignature method = new MethodSignature();
     private String supportingClassSourceWithComment;
 
     private final static Pattern SUPPORTING_CLASS_DECLARE_PATTERN = Pattern.compile(PUBLIC_CLASS_DECLARE_LINE_REGEX);
@@ -48,6 +53,34 @@ public class LeetCodeSnippetVisitor extends Java8BaseVisitor {
     }
 
     @Override
+    public Object visitMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) {
+        if (ctx.methodModifier(0).getText().equals("public")) {
+            Java8Parser.MethodDeclaratorContext md = ctx.methodHeader().methodDeclarator();
+            this.method.setName(md.Identifier().getText());
+
+            Java8Parser.FormalParameterListContext fpList = md.formalParameterList();
+            this.method.setParameterTypes(collectParameterTypes(fpList));
+
+            this.method.setReturnType(ctx.methodHeader().result().getText());
+        }
+        return super.visitMethodDeclaration(ctx);
+    }
+
+    private List<String> collectParameterTypes(Java8Parser.FormalParameterListContext fpList) {
+        List<String> resultList = new ArrayList<>();
+        if (fpList.formalParameters() != null) {
+            resultList.addAll(fpList.formalParameters().formalParameter().stream().map(fp -> fp.unannType().getText()).collect(Collectors.toList()));
+        }
+        Java8Parser.LastFormalParameterContext lfp = fpList.lastFormalParameter();
+        if (lfp.unannType() != null) {
+            resultList.add(lfp.unannType().getText());
+        } else {
+            resultList.add(lfp.formalParameter().unannType().getText());
+        }
+        return resultList;
+    }
+
+    @Override
     public Object visitMethodBody(Java8Parser.MethodBodyContext ctx) {
         String text = ctx.getText();
         if (text.trim().equals("{}")) {
@@ -65,5 +98,9 @@ public class LeetCodeSnippetVisitor extends Java8BaseVisitor {
 
     public String getSupportingClassSourceWithComment() {
         return supportingClassSourceWithComment;
+    }
+
+    public MethodSignature getMethod() {
+        return method;
     }
 }

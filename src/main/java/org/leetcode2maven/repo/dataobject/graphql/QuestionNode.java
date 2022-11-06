@@ -8,5 +8,7 @@ import java.util.List;
 public class QuestionNode {
     private int questionId;
     private String titleSlug;
+    private String content;
     private List<CodeSnippetNode> codeSnippets;
+    private List<String> exampleTestcaseList;
 }

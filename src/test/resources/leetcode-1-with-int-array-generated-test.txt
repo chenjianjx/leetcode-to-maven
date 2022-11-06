@@ -1,0 +1,52 @@
+import java.util.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class SolutionTest {
+
+    Solution solution = new Solution();
+
+    @Test
+    void case1() {
+        assertEquals(toIntArray("[0,1]"), solution.twoSum(toIntArray("[2,7,11,15]"), 9));
+    }
+
+
+    @Test
+    void case2() {
+        assertEquals(toIntArray("[1,2]"), solution.twoSum(toIntArray("[3,2,4]"), 6));
+    }
+
+
+    @Test
+    void case3() {
+        assertEquals(toIntArray("[0,1]"), solution.twoSum(toIntArray("[3,3]"), 6));
+    }
+
+
+
+    private void printIntArray(int[] array) {
+        System.out.println(Arrays.stream(array).boxed().collect(Collectors.toList()));
+    }
+
+
+    private int[] toIntArray(String rawInput) {
+        rawInput = rawInput.replaceAll("\\[", "");
+        rawInput = rawInput.replaceAll("\\]", "");
+        rawInput = rawInput.trim();
+
+
+        List<Integer> elements = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(rawInput, " ,");
+        while (st.hasMoreTokens()) {
+            elements.add(Integer.parseInt(st.nextToken()));
+        }
+        return elements.stream().mapToInt(i -> i).toArray();
+    }
+
+
+
+
+}

@@ -1,0 +1,64 @@
+import java.util.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class SolutionTest {
+
+    Solution solution = new Solution();
+
+    @Test
+    void case1() {
+        assertEquals(toTwoDIntArray("[[0,0,0],[0,1,0],[0,0,0]]"), solution.updateMatrix(toTwoDIntArray("[[0,0,0],[0,1,0],[0,0,0]]")));
+    }
+
+
+    @Test
+    void case2() {
+        assertEquals(toTwoDIntArray("[[0,0,0],[0,1,0],[1,2,1]]"), solution.updateMatrix(toTwoDIntArray("[[0,0,0],[0,1,0],[1,1,1]]")));
+    }
+
+
+
+    private void printIntArray(int[] array) {
+        System.out.println(Arrays.stream(array).boxed().collect(Collectors.toList()));
+    }
+
+    private void printTwoDIntArray(int[][] array) {
+        Arrays.stream(array).forEach(row -> {
+            printIntArray(row);
+        });
+    }
+
+    private int[] toIntArray(String rawInput) {
+        rawInput = rawInput.replaceAll("\\[", "");
+        rawInput = rawInput.replaceAll("\\]", "");
+        rawInput = rawInput.trim();
+
+
+        List<Integer> elements = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(rawInput, " ,");
+        while (st.hasMoreTokens()) {
+            elements.add(Integer.parseInt(st.nextToken()));
+        }
+        return elements.stream().mapToInt(i -> i).toArray();
+    }
+
+    private int[][] toTwoDIntArray(String rawInput) {
+
+        Pattern rowPattern = Pattern.compile("\\[\\s*\\d\\s*(\\s*,\\s*\\d\\s*)*\\]");
+        Matcher matcher = rowPattern.matcher(rawInput);
+
+        List<int[]> rows = new ArrayList<>();
+        while (matcher.find()) {
+            String row = matcher.group();
+            rows.add(toIntArray(row));
+        }
+
+        return rows.stream().toArray(int[][]::new);
+    }
+
+
+
+}
