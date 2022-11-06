@@ -1,16 +1,16 @@
-package org.leetcode2maven.biz.support.antlr;
+package org.leetcode2maven.biz.support.leetcode.antlr;
 
 import org.antlr.v4.runtime.TokenStreamRewriter;
 import org.leetode2maven.biz.support.antlr.Java8BaseVisitor;
 import org.leetode2maven.biz.support.antlr.Java8Parser;
 
-public class TempJava8Visitor extends Java8BaseVisitor {
+public class LeetCodeSnippetVisitor extends Java8BaseVisitor {
     private final TokenStreamRewriter rewriter;
 
 
     private String className;
 
-    public TempJava8Visitor(TokenStreamRewriter rewriter) {
+    public LeetCodeSnippetVisitor(TokenStreamRewriter rewriter) {
         this.rewriter = rewriter;
     }
 

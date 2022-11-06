@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStreamRewriter;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.leetcode2maven.biz.dto.leetcode.SingleClassCode;
-import org.leetcode2maven.biz.support.antlr.TempJava8Visitor;
+import org.leetcode2maven.biz.support.leetcode.antlr.LeetCodeSnippetVisitor;
 import org.leetode2maven.biz.support.antlr.Java8Lexer;
 import org.leetode2maven.biz.support.antlr.Java8Parser;
 
@@ -19,7 +19,7 @@ public class LeetCodeBiz {
 
 
         TokenStreamRewriter rewriter = new TokenStreamRewriter(tokens);
-        TempJava8Visitor visitor = new TempJava8Visitor(rewriter);
+        LeetCodeSnippetVisitor visitor = new LeetCodeSnippetVisitor(rewriter);
         visitor.visit(tree);
 
         SingleClassCode result = new SingleClassCode();
