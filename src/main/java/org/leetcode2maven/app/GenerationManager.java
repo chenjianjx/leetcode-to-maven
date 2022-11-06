@@ -32,16 +32,16 @@ public class GenerationManager {
 
     /**
      *
-     * @param questionId
+     * @param questionFrontendId
      * @param projectParentDir
      * @return the project dir
      * @throws IOException
      */
-    public File generateMavenProject(int questionId, File projectParentDir) throws IOException {
-        validate(questionId, projectParentDir);
+    public File generateMavenProject(int questionFrontendId, File projectParentDir) throws IOException {
+        validate(questionFrontendId, projectParentDir);
 
 
-        Question question = leetCodeRepo.getQuestionById(questionId);
+        Question question = leetCodeRepo.getQuestionByFrontendId(questionFrontendId);
 
         String projectDirName = fileBiz.getProjectDirName(question);
         File projectDir = new File(projectParentDir, projectDirName);
@@ -65,9 +65,9 @@ public class GenerationManager {
         return projectDir;
     }
 
-    private static void validate(int questionId, File projectDir) {
-        if (questionId <= 0) {
-            throw new IllegalArgumentException("Please input a valid leet code questionId");
+    private static void validate(int questionFrontendId, File projectDir) {
+        if (questionFrontendId <= 0) {
+            throw new IllegalArgumentException("Please input a valid leet code questionFrontendId. The frontend id is what you can see on the website.");
         }
 
         if (projectDir == null) {

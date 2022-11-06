@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class QuestionNode {
-    private int questionId;
+    private int questionFrontendId;
     private String titleSlug;
     private String content;
     private List<CodeSnippetNode> codeSnippets;

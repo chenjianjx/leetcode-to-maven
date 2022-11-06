@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * The result of https://leetcode.com/api/problems/all/
+ * The result of https://leetcode.com/api/problems/{topic}/
  */
 @Data
 public class ProblemsResponse {
@@ -19,7 +19,7 @@ public class ProblemsResponse {
 
     @Data
     public static class Stat {
-        private int question_id;
+        private int frontend_question_id;
         private String question__title_slug;
     }
 

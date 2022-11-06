@@ -18,7 +18,7 @@ class FileBizTest {
     void buildPomFile() throws IOException {
         Question q1 = new Question();
         q1.setTitleSlug("two-sum");
-        q1.setQuestionId(1);
+        q1.setFrontendId(1);
 
         assertEquals(
                 IOUtils.toString(this.getClass().getResource("/leetcode-1-generated-pom.txt"), DEFAULT_CHARSET),

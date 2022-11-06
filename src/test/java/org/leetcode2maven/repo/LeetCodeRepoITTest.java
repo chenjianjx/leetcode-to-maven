@@ -15,9 +15,9 @@ class LeetCodeRepoITTest {
     private LeetCodeRepo repo = new LeetCodeRepo(new LeetCodeHttpClient());
 
     @Test
-    void getQuestionById() {
-        Question question = repo.getQuestionById(1);
-        assertEquals(1, question.getQuestionId());
+    void getQuestionByFrontendId() {
+        Question question = repo.getQuestionByFrontendId(1);
+        assertEquals(1, question.getFrontendId());
         assertEquals("two-sum", question.getTitleSlug());
         assertEquals("class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        \n    }\n}", question.getJavaCode());
         assertArrayEquals(
@@ -27,5 +27,12 @@ class LeetCodeRepoITTest {
                         TestCase.builder().input(new ArrayList<>(Arrays.asList("[3,3]","6"))).expected("[0,1]").build()
                 },
                 question.getDefaultTestCases().toArray());
+    }
+
+    @Test
+    void getQuestionByFrontendId_questionIdAndFrontendIdMismatch(){
+        Question question = repo.getQuestionByFrontendId(876);
+        assertEquals(876, question.getFrontendId());
+        assertEquals("middle-of-the-linked-list", question.getTitleSlug());
     }
 }
