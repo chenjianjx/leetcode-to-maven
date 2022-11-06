@@ -9,4 +9,5 @@ public class QuestionNode {
     private int questionId;
     private String titleSlug;
     private List<CodeSnippetNode> codeSnippets;
+    private List<String> exampleTestcaseList;
 }
