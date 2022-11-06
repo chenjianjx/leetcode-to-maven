@@ -11,9 +11,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class LeetCodeRepo {
+
+    private static final Pattern CONTENT_EXAMPLE_OUTPUT_PATTERN = Pattern.compile("\\<strong\\>Output\\:\\<\\/strong\\>([^<]+)\\<");
 
     private final LeetCodeHttpClient leetCodeHttpClient;
 
@@ -51,7 +55,7 @@ public class LeetCodeRepo {
 
     private Question getQuestionByTitleSlug(String titleSlug) {
 
-        String query = "query questionData($titleSlug: String!) { question(titleSlug: $titleSlug) {questionId titleSlug codeSnippets{langSlug code} exampleTestcaseList} }";
+        String query = "query questionData($titleSlug: String!) { question(titleSlug: $titleSlug) {questionId titleSlug content codeSnippets{langSlug code} exampleTestcaseList} }";
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("titleSlug", titleSlug);
@@ -67,19 +71,40 @@ public class LeetCodeRepo {
         question.setTitleSlug(questionNode.getTitleSlug());
         String javaCode = questionNode.getCodeSnippets().stream().filter(cs -> cs.getLangSlug().equals("java")).findFirst().get().getCode();
         question.setJavaCode(javaCode);
+
+        //Note: the graphql api only contains "input" of the test cases
         List<TestCase> defaultTestCases = questionNode.getExampleTestcaseList().stream().map(raw -> {
             String[] pieces = StringUtils.split(raw, '\n');
             TestCase model = new TestCase();
             model.setInput(new ArrayList<>());
-            for (int i = 0; i < pieces.length - 1; i++) {
+            for (int i = 0; i < pieces.length; i++) {
                 model.getInput().add(StringUtils.trimToNull(pieces[i]));
             }
             model.setExpected(pieces[pieces.length - 1]);
             return model;
         }).collect(Collectors.toList());
+
+        //"expected" of the test cases have to be parsed from the question content
+        fillExpectedOfTestCase(defaultTestCases, questionNode.getContent());
+
         question.setDefaultTestCases(defaultTestCases);
 
         return question;
+    }
+
+    private static void fillExpectedOfTestCase(List<TestCase> defaultTestCases, String content) {
+        Matcher matcher = CONTENT_EXAMPLE_OUTPUT_PATTERN.matcher(content);
+        List<String> expectedList = new ArrayList<>();
+        while (matcher.find()) {
+            expectedList.add(matcher.group(1));
+        }
+        for (int i = 0; i < defaultTestCases.size(); i++) {
+            if (i < expectedList.size()) {
+                defaultTestCases.get(i).setExpected(StringUtils.trimToNull(expectedList.get(i)));
+            }else{
+                throw new IllegalStateException("Failed to find the expected output for example " + (i + i));
+            }
+        }
     }
 
 }
