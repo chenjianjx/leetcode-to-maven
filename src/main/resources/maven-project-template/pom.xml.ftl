@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>leetcode-problem</groupId>
-    <artifactId>lc-${questionId}-${titleSlug}</artifactId>
+    <artifactId>${artifactId}</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

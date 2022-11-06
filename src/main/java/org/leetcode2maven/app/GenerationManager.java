@@ -26,11 +26,15 @@ public class GenerationManager {
         this.fileRepo = fileRepo;
     }
 
-    public void generateMavenProject(int questionId, File projectDir) throws IOException {
-        validate(questionId, projectDir);
-        fileRepo.createProjectDir(projectDir);
+    public void generateMavenProject(int questionId, File projectParentDir) throws IOException {
+        validate(questionId, projectParentDir);
+
 
         Question question = leetCodeRepo.getQuestionById(questionId);
+
+        String projectDirName = fileBiz.getProjectDirName(question);
+        File projectDir = new File(projectParentDir, projectDirName);
+        fileRepo.createProjectDir(projectDir);
 
         String pomFileContent = fileBiz.buildPomFile(question);
         fileRepo.savePomFile(projectDir, pomFileContent);
@@ -51,10 +55,6 @@ public class GenerationManager {
 
         if (projectDir == null) {
             throw new IllegalArgumentException("Please input projectDir");
-        }
-
-        if(projectDir.exists() && projectDir.listFiles().length > 0){
-            throw new IllegalStateException(projectDir + " is not empty.");
         }
     }
 }
