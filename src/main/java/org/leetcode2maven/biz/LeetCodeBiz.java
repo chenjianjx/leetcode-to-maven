@@ -22,6 +22,8 @@ public class LeetCodeBiz {
         LeetCodeSnippetVisitor visitor = new LeetCodeSnippetVisitor(rewriter);
         visitor.visit(tree);
 
+
+
         SingleClassCode result = new SingleClassCode();
         result.setClassName(visitor.getClassName());
         result.setSource(rewriter.getText());
