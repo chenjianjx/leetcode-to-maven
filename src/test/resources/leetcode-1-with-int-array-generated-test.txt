@@ -1,3 +1,4 @@
+import java.util.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -24,18 +25,26 @@ class SolutionTest {
 
 
 
+    private void printIntArray(int[] array) {
+        System.out.println(Arrays.stream(array).boxed().collect(Collectors.toList()));
+    }
 
-    private String toIntArray(String rawInput) {
+
+    private int[] toIntArray(String rawInput) {
+        rawInput = rawInput.replaceAll("\\[", "");
+        rawInput = rawInput.replaceAll("\\]", "");
         rawInput = rawInput.trim();
-        rawInput = StringUtils.stripStart(rawInput, "[");
-        rawInput = StringUtils.stripEnd(rawInput, "]");
 
-        List<String> elements = new ArrayList<>();
+
+        List<Integer> elements = new ArrayList<>();
         StringTokenizer st = new StringTokenizer(rawInput, " ,");
         while (st.hasMoreTokens()) {
-            elements.add(st.nextToken());
+            elements.add(Integer.parseInt(st.nextToken()));
         }
-
-        return String.format("new int[]{%s}", StringUtils.join(elements, ", "));
+        return elements.stream().mapToInt(i -> i).toArray();
     }
+
+
+
+
 }

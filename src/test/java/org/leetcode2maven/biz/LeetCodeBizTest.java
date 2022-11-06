@@ -49,7 +49,7 @@ class LeetCodeBizTest {
     }
 
     @Test
-    void buildUnitTestCode_plainQuestion() throws IOException {
+    void buildUnitTestCode_intArray() throws IOException {
         LeetCodeSnippetParseResult parseResult = new LeetCodeSnippetParseResult();
         parseResult.setClassName("Solution");
         parseResult.setMethod(new MethodSignature());
@@ -70,8 +70,35 @@ class LeetCodeBizTest {
 
 
         assertEquals("SolutionTest", result.getClassName());
-        assertEquals(IOUtils.toString(this.getClass().getResource("/leetcode-1-generated-test.txt"), DEFAULT_CHARSET), result.getSource());
+        assertEquals(IOUtils.toString(this.getClass().getResource("/leetcode-1-with-int-array-generated-test.txt"), DEFAULT_CHARSET), result.getSource());
     }
+
+    @Test
+    void buildUnitTestCode_twoDIntArray() throws IOException {
+        LeetCodeSnippetParseResult parseResult = new LeetCodeSnippetParseResult();
+        parseResult.setClassName("Solution");
+        parseResult.setMethod(new MethodSignature());
+        parseResult.getMethod().setName("updateMatrix");
+        parseResult.getMethod().setParameterTypes(Arrays.asList("int[][]"));
+        parseResult.getMethod().setReturnType("int[][]");
+
+
+
+        Question question = new Question();
+        question.setDefaultTestCases(
+                Arrays.asList(
+                        TestCase.builder().input(new ArrayList<>(Arrays.asList("[[0,0,0],[0,1,0],[0,0,0]]"))).expected("[[0,0,0],[0,1,0],[0,0,0]]").build(),
+                        TestCase.builder().input(new ArrayList<>(Arrays.asList("[[0,0,0],[0,1,0],[1,1,1]]"))).expected("[[0,0,0],[0,1,0],[1,2,1]]").build()
+
+                )
+        );
+        SingleClassCode result = biz.buildUnitTestCode(parseResult, question);
+
+        assertEquals("SolutionTest", result.getClassName());
+        assertEquals(IOUtils.toString(this.getClass().getResource("/leetcode-542-with-2d-array-generated-test.txt"), DEFAULT_CHARSET), result.getSource());
+    }
+
+
 
 
     @Test
@@ -96,6 +123,29 @@ class LeetCodeBizTest {
 
 
         assertEquals("SolutionTest", result.getClassName());
-        assertEquals(IOUtils.toString(this.getClass().getResource("/leetcode-235-generated-test.txt"), DEFAULT_CHARSET), result.getSource());
+        assertEquals(IOUtils.toString(this.getClass().getResource("/leetcode-235-with-TreeNode-generated-test.txt"), DEFAULT_CHARSET), result.getSource());
+    }
+
+    @Test
+    void buildUnitTestCode_questionWithListNode() throws IOException {
+        LeetCodeSnippetParseResult parseResult = new LeetCodeSnippetParseResult();
+        parseResult.setClassName("Solution");
+        parseResult.setMethod(new MethodSignature());
+        parseResult.getMethod().setName("middleNode");
+        parseResult.getMethod().setParameterTypes(Arrays.asList("ListNode"));
+        parseResult.getMethod().setReturnType("ListNode");
+
+        Question question = new Question();
+        question.setDefaultTestCases(
+                Arrays.asList(
+                        TestCase.builder().input(new ArrayList<>(Arrays.asList("[1,2,3,4,5]"))).expected("[3,4,5]").build(),
+                        TestCase.builder().input(new ArrayList<>(Arrays.asList("[1,2,3,4,5,6]"))).expected("[4,5,6]").build()
+                )
+        );
+        SingleClassCode result = biz.buildUnitTestCode(parseResult, question);
+
+
+        assertEquals("SolutionTest", result.getClassName());
+        assertEquals(IOUtils.toString(this.getClass().getResource("/leetcode-876-with-ListNode-generated-test.txt"), DEFAULT_CHARSET), result.getSource());
     }
 }

@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -173,21 +172,32 @@ public class LeetCodeBiz {
             }
 
             case "int[]": {
-                return toConverterCode(dataString, utilMethods, "toIntArray");
+                utilMethods.add("printIntArray");
+                utilMethods.add("toIntArray");
+                return String.format("%s(\"%s\")", "toIntArray", dataString);
+            }
+
+            case "int[][]": {
+                utilMethods.add("printIntArray");
+                utilMethods.add("toIntArray");
+                utilMethods.add("printTwoDIntArray");
+                utilMethods.add("toTwoDIntArray");
+                return String.format("%s(\"%s\")", "toTwoDIntArray", dataString);
             }
 
             case "TreeNode": {
-                return toConverterCode(dataString, utilMethods, "toTreeNode");
+                utilMethods.add("toTreeNode");
+                return String.format("%s(\"%s\")", "toTreeNode", dataString);
+            }
+
+            case "ListNode": {
+                utilMethods.add("toListNode");
+                return String.format("%s(\"%s\")", "toListNode", dataString);
             }
             default:
                 return dataString;
         }
 
-    }
-
-    private static String toConverterCode(String dataString, Set<String> utilMethods, String utilMethodName) {
-        utilMethods.add(utilMethodName);
-        return String.format("%s(\"%s\")", utilMethodName, dataString);
     }
 
 }
