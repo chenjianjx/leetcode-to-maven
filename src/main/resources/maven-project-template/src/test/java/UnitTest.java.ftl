@@ -11,9 +11,19 @@ class ${testClassName} {
     <#list testCases as case>
     @Test
     void case${case?index + 1}() {
-        assertEquals(${case.expected}, ${targetInstanceName}.${methodName}(<#list case.params as param>${param}<#sep>, </#sep></#list>));
-    }
+        ${methodReturnType} expected = ${case.expected};
+        ${methodReturnType} actual = ${targetInstanceName}.${methodName}(<#list case.params as param>${param}<#sep>, </#sep></#list>);
 
+        <#if methodReturnType == "int[]" || methodReturnType == "int[][]">
+        assertArrayEquals(expected, actual);
+        <#elseif methodReturnType == "TreeNode">
+        assertEquals(expected.val, actual.val);
+        <#elseif methodReturnType == "ListNode">
+        assertEquals(expected.val, actual.val);
+        <#else>
+        assertEquals(expected, actual);
+        </#if>
+    }
 
     </#list>
 

@@ -10,21 +10,27 @@ class SolutionTest {
 
     @Test
     void case1() {
-        assertEquals(toTreeNode("6"), solution.lowestCommonAncestor(toTreeNode("[6,2,8,0,4,7,9,null,null,3,5]"), toTreeNode("2"), toTreeNode("8")));
-    }
+        TreeNode expected = toTreeNode("6");
+        TreeNode actual = solution.lowestCommonAncestor(toTreeNode("[6,2,8,0,4,7,9,null,null,3,5]"), toTreeNode("2"), toTreeNode("8"));
 
+        assertEquals(expected.val, actual.val);
+    }
 
     @Test
     void case2() {
-        assertEquals(toTreeNode("2"), solution.lowestCommonAncestor(toTreeNode("[6,2,8,0,4,7,9,null,null,3,5]"), toTreeNode("2"), toTreeNode("4")));
-    }
+        TreeNode expected = toTreeNode("2");
+        TreeNode actual = solution.lowestCommonAncestor(toTreeNode("[6,2,8,0,4,7,9,null,null,3,5]"), toTreeNode("2"), toTreeNode("4"));
 
+        assertEquals(expected.val, actual.val);
+    }
 
     @Test
     void case3() {
-        assertEquals(toTreeNode("2"), solution.lowestCommonAncestor(toTreeNode("[2,1]"), toTreeNode("2"), toTreeNode("1")));
-    }
+        TreeNode expected = toTreeNode("2");
+        TreeNode actual = solution.lowestCommonAncestor(toTreeNode("[2,1]"), toTreeNode("2"), toTreeNode("1"));
 
+        assertEquals(expected.val, actual.val);
+    }
 
 
 
