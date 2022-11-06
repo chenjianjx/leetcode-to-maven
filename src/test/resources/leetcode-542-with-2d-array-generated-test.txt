@@ -10,15 +10,19 @@ class SolutionTest {
 
     @Test
     void case1() {
-        assertEquals(toTwoDIntArray("[[0,0,0],[0,1,0],[0,0,0]]"), solution.updateMatrix(toTwoDIntArray("[[0,0,0],[0,1,0],[0,0,0]]")));
-    }
+        int[][] expected = toTwoDIntArray("[[0,0,0],[0,1,0],[0,0,0]]");
+        int[][] actual = solution.updateMatrix(toTwoDIntArray("[[0,0,0],[0,1,0],[0,0,0]]"));
 
+        assertArrayEquals(expected, actual);
+    }
 
     @Test
     void case2() {
-        assertEquals(toTwoDIntArray("[[0,0,0],[0,1,0],[1,2,1]]"), solution.updateMatrix(toTwoDIntArray("[[0,0,0],[0,1,0],[1,1,1]]")));
-    }
+        int[][] expected = toTwoDIntArray("[[0,0,0],[0,1,0],[1,2,1]]");
+        int[][] actual = solution.updateMatrix(toTwoDIntArray("[[0,0,0],[0,1,0],[1,1,1]]"));
 
+        assertArrayEquals(expected, actual);
+    }
 
 
     private void printIntArray(int[] array) {

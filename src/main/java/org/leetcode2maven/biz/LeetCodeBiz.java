@@ -101,6 +101,7 @@ public class LeetCodeBiz {
         model.put("targetClassName", parseResult.getClassName());
         model.put("targetInstanceName", StringUtils.uncapitalize(parseResult.getClassName()));
         model.put("methodName", parseResult.getMethod().getName());
+        model.put("methodReturnType", parseResult.getMethod().getReturnType());
 
         Set<String> utilMethods = new HashSet<>();
         model.put("utilMethods", utilMethods);

@@ -10,15 +10,19 @@ class SolutionTest {
 
     @Test
     void case1() {
-        assertEquals(toListNode("[3,4,5]"), solution.middleNode(toListNode("[1,2,3,4,5]")));
-    }
+        ListNode expected = toListNode("[3,4,5]");
+        ListNode actual = solution.middleNode(toListNode("[1,2,3,4,5]"));
 
+        assertEquals(expected.val, actual.val);
+    }
 
     @Test
     void case2() {
-        assertEquals(toListNode("[4,5,6]"), solution.middleNode(toListNode("[1,2,3,4,5,6]")));
-    }
+        ListNode expected = toListNode("[4,5,6]");
+        ListNode actual = solution.middleNode(toListNode("[1,2,3,4,5,6]"));
 
+        assertEquals(expected.val, actual.val);
+    }
 
 
 
