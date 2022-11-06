@@ -21,8 +21,11 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -100,10 +103,13 @@ public class LeetCodeBiz {
         model.put("targetInstanceName", StringUtils.uncapitalize(parseResult.getClassName()));
         model.put("methodName", parseResult.getMethod().getName());
 
+        Set<String> utilMethods = new HashSet<>();
+        model.put("utilMethods", utilMethods);
         model.put("testCases", question.getDefaultTestCases().stream()
                 .map(testCase -> leetCodeCaseStringToUnitTestCaseString(parseResult.getMethod().getParameterTypes(),
                         parseResult.getMethod().getReturnType(),
-                        testCase))
+                        testCase,
+                        utilMethods))
                 .collect(Collectors.toList()));
 
         String source;
@@ -122,16 +128,17 @@ public class LeetCodeBiz {
         return result;
     }
 
-    private Map<String, Object> leetCodeCaseStringToUnitTestCaseString(List<String> parameterTypes, String returnType, TestCase testCase) {
+    private Map<String, Object> leetCodeCaseStringToUnitTestCaseString(List<String> parameterTypes, String returnType,
+                                                                       TestCase testCase, Set<String> utilMethods) {
         Map<String, Object> result = new HashMap<>();
         List<String> params = new ArrayList<>();
         for (int paramIndex = 0; paramIndex < testCase.getInput().size(); paramIndex++) {
             String dataString = testCase.getInput().get(paramIndex);
             String dataType = paramIndex < parameterTypes.size() ? parameterTypes.get(paramIndex) : null;
-            params.add(testDataToJavaCode(dataType, dataString));
+            params.add(testDataToJavaCode(dataType, dataString, utilMethods));
         }
         result.put("params", params);
-        result.put("expected", testDataToJavaCode(returnType, testCase.getExpected()));
+        result.put("expected", testDataToJavaCode(returnType, testCase.getExpected(), utilMethods));
         return result;
     }
 
@@ -139,9 +146,10 @@ public class LeetCodeBiz {
      * e.g. [1,2] -> toIntArray("[1,2]")
      *
      * @param dataString
+     * @param utilMethods
      * @return
      */
-    private String testDataToJavaCode(String dataType, String dataString) {
+    private String testDataToJavaCode(String dataType, String dataString, Set<String> utilMethods) {
         if (dataType == null) {
             return dataString;
         }
@@ -165,11 +173,11 @@ public class LeetCodeBiz {
             }
 
             case "int[]": {
-                return String.format("toIntArray(\"%s\")", dataString);
+                return toConverterCode(dataString, utilMethods, "toIntArray");
             }
 
             case "TreeNode": {
-                return String.format("toTreeNode(\"%s\")", dataString);
+                return toConverterCode(dataString, utilMethods, "toTreeNode");
             }
             default:
                 return dataString;
@@ -177,6 +185,10 @@ public class LeetCodeBiz {
 
     }
 
+    private static String toConverterCode(String dataString, Set<String> utilMethods, String utilMethodName) {
+        utilMethods.add(utilMethodName);
+        return String.format("%s(\"%s\")", utilMethodName, dataString);
+    }
 
 }
 

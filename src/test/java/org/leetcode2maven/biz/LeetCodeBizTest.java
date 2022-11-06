@@ -98,5 +98,4 @@ class LeetCodeBizTest {
         assertEquals("SolutionTest", result.getClassName());
         assertEquals(IOUtils.toString(this.getClass().getResource("/leetcode-235-generated-test.txt"), DEFAULT_CHARSET), result.getSource());
     }
-
 }

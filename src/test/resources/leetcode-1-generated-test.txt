@@ -23,4 +23,19 @@ class SolutionTest {
     }
 
 
+
+
+    private String toIntArray(String rawInput) {
+        rawInput = rawInput.trim();
+        rawInput = StringUtils.stripStart(rawInput, "[");
+        rawInput = StringUtils.stripEnd(rawInput, "]");
+
+        List<String> elements = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(rawInput, " ,");
+        while (st.hasMoreTokens()) {
+            elements.add(st.nextToken());
+        }
+
+        return String.format("new int[]{%s}", StringUtils.join(elements, ", "));
+    }
 }
