@@ -31,48 +31,30 @@ class GenerationManagerITTest {
         FileBiz fileBiz = new FileBiz(new FreemarkerTemplateFactory());
         generationManager = new GenerationManager(leetCodeBiz, fileBiz, leetCodeRepo, fileRepo);
 
-
         projectParentDir = Files.createTempDirectory("leetcode2maven-GenerationManagerITTest-").toFile();
-        System.out.println("Project parent dir is " + projectParentDir);
+
     }
 
     @Test
     public void generateMavenProject_plainQuestion() throws IOException {
 
+        File expectedProjectDir = new File(projectParentDir, "lc-1-two-sum");
+        assertEquals(expectedProjectDir, generationManager.generateMavenProject(1, projectParentDir));
+        System.out.println("Project dir is " + expectedProjectDir);
 
-
-
-        generationManager.generateMavenProject(1, projectParentDir);
-
-        File projectDir = new File(projectParentDir, "lc-1-two-sum");
-
-        File pomFile = new File(projectDir, "pom.xml");
-        assertTrue(pomFile.exists());
-
-        File solutionFile = new File(projectDir, "src/main/java/Solution.java");
-        assertTrue(solutionFile.exists());
-
-        File notesFile = new File(projectDir, "notes.md");
-        assertTrue(notesFile.exists());
+        assertTrue(new File(expectedProjectDir, "pom.xml").exists());
+        assertTrue(new File(expectedProjectDir, "src/main/java/Solution.java").exists());
+        assertTrue(new File(expectedProjectDir, "notes.md").exists());
 
     }
 
-//    @Test
-//    public void generateMavenProject_questionWithSupportingClass() throws IOException {
-//
-//
-//        generationManager.generateMavenProject(1, projectParentDir);
-//
-//        File projectDir = new File(projectParentDir, "lc-1-two-sum");
-//
-//        File pomFile = new File(projectDir, "pom.xml");
-//        assertTrue(pomFile.exists());
-//
-//        File solutionFile = new File(projectDir, "src/main/java/Solution.java");
-//        assertTrue(solutionFile.exists());
-//
-//        File notesFile = new File(projectDir, "notes.md");
-//        assertTrue(notesFile.exists());
-//
-//    }
+    @Test
+    public void generateMavenProject_questionWithSupportingClass() throws IOException {
+
+        File expectedProjectDir = new File(projectParentDir, "lc-235-lowest-common-ancestor-of-a-binary-search-tree");
+        assertEquals(expectedProjectDir, generationManager.generateMavenProject(235, projectParentDir));
+        System.out.println("Project dir is " + expectedProjectDir);
+
+        assertTrue(new File(expectedProjectDir, "src/main/java/TreeNode.java").exists());
+    }
 }

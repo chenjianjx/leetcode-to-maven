@@ -6,5 +6,4 @@ import lombok.Data;
 public class SingleClassCode {
     private String className;
     private String source;
-    private String supportingClassSource;
 }

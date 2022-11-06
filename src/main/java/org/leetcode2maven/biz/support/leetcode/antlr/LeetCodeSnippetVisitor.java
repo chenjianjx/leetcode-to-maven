@@ -8,6 +8,8 @@ import org.leetode2maven.biz.support.antlr.Java8Parser;
 
 import java.util.regex.Pattern;
 
+import static org.leetcode2maven.biz.LeetCodeBiz.PUBLIC_CLASS_DECLARE_LINE_REGEX;
+
 public class LeetCodeSnippetVisitor extends Java8BaseVisitor {
     private final TokenStreamRewriter rewriter;
 
@@ -17,7 +19,7 @@ public class LeetCodeSnippetVisitor extends Java8BaseVisitor {
     private String className;
     private String supportingClassSourceWithComment;
 
-    private final static Pattern SUPPORTING_CLASS_DECLARE_PATTERN = Pattern.compile("public\\s+class\\s+");
+    private final static Pattern SUPPORTING_CLASS_DECLARE_PATTERN = Pattern.compile(PUBLIC_CLASS_DECLARE_LINE_REGEX);
 
     public LeetCodeSnippetVisitor(TokenStreamRewriter rewriter) {
         this.tokenStream = rewriter.getTokenStream();
