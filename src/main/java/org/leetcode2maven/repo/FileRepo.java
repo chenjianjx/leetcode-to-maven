@@ -11,6 +11,9 @@ import static org.leetcode2maven.global.GlobalConstants.DEFAULT_CHARSET;
 
 public class FileRepo {
     public void createProjectDir(File dir) {
+        if (dir.exists() && dir.listFiles().length > 0) {
+            throw new IllegalArgumentException(dir + " is not empty.");
+        }
         dir.mkdirs();
     }
 

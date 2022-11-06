@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>leetcode-problem</groupId>
-    <artifactId>lc-${questionId}-${titleSlug}</artifactId>
+    <artifactId>${artifactId}</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
         <junit-jupiter.version>5.4.0</junit-jupiter.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
 

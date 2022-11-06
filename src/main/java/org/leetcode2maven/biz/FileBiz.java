@@ -25,8 +25,7 @@ public class FileBiz {
 
         Map<String, Object> model = new HashMap<String, Object>();
 
-        model.put("questionId", question.getQuestionId());
-        model.put("titleSlug", question.getTitleSlug());
+        model.put("artifactId", getArtifactId(question));
 
         try {
             Writer result = new StringWriter();
@@ -36,5 +35,15 @@ public class FileBiz {
             throw new IllegalStateException("Failed to create the pom.xml file", e);
         }
     }
+
+    public String getProjectDirName(Question question) {
+        return getArtifactId(question);
+    }
+
+    private String getArtifactId(Question question) {
+        return "lc-" + question.getQuestionId() + "-" + question.getTitleSlug();
+    }
+
+
 
 }

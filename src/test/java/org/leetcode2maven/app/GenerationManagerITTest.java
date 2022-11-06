@@ -35,28 +35,30 @@ class GenerationManagerITTest {
 
     @Test
     public void generateMavenProject() throws IOException {
-        File dir = Files.createTempDirectory("leetcode2maven-GenerationManagerITTest-").toFile();
-        System.out.println("Project dir is " + dir);
+        File parentDir = Files.createTempDirectory("leetcode2maven-GenerationManagerITTest-").toFile();
+        System.out.println("Project parent dir is " + parentDir);
 
 
-        generationManager.generateMavenProject(1, dir);
+        generationManager.generateMavenProject(1, parentDir);
 
-        File pomFile = new File(dir, "pom.xml");
+        File projectDir = new File(parentDir, "lc-1-two-sum");
+
+        File pomFile = new File(projectDir, "pom.xml");
         assertTrue(pomFile.exists());
         assertEquals(
-                IOUtils.toString(this.getClass().getResource("/leetcode-1-pom.txt"), DEFAULT_CHARSET),
+                IOUtils.toString(this.getClass().getResource("/leetcode-1-generated-pom.txt"), DEFAULT_CHARSET),
                 FileUtils.readFileToString(pomFile, DEFAULT_CHARSET)
         );
 
-        File solutionFile = new File(dir, "src/main/java/Solution.java");
+        File solutionFile = new File(projectDir, "src/main/java/Solution.java");
         assertTrue(solutionFile.exists());
         assertEquals(
-                IOUtils.toString(this.getClass().getResource("/leetcode-1-code-snippet.txt"), DEFAULT_CHARSET),
+                IOUtils.toString(this.getClass().getResource("/leetcode-1-enhanced-code.txt"), DEFAULT_CHARSET),
                 FileUtils.readFileToString(solutionFile, DEFAULT_CHARSET)
         );
 
 
-        File notesFile = new File(dir, "notes.md");
+        File notesFile = new File(projectDir, "notes.md");
         assertTrue(notesFile.exists());
 
     }

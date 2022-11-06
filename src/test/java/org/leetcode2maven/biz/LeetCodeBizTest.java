@@ -2,6 +2,7 @@ package org.leetcode2maven.biz;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
+import org.leetcode2maven.biz.dto.leetcode.SingleClassCode;
 
 import java.io.IOException;
 
@@ -13,8 +14,12 @@ class LeetCodeBizTest {
     private LeetCodeBiz biz = new LeetCodeBiz();
 
     @Test
-    void extractClassName() throws IOException {
-        String javaCode = IOUtils.toString(this.getClass().getResource("/leetcode-1-code-snippet.txt"), DEFAULT_CHARSET);
-        assertEquals("Solution", biz.extractClassName(javaCode));
+    void parseCodeSnippet() throws IOException {
+        String javaCode = IOUtils.toString(this.getClass().getResource("/leetcode-1-original-code-snippet.txt"), DEFAULT_CHARSET);
+        SingleClassCode generated = biz.parseCodeSnippet(javaCode);
+        assertEquals("Solution", generated.getClassName());
+        assertEquals(
+                IOUtils.toString(this.getClass().getResource("/leetcode-1-enhanced-code.txt"), DEFAULT_CHARSET)
+                , generated.getSource());
     }
 }

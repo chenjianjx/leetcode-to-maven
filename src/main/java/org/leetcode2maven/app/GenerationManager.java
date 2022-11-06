@@ -2,6 +2,7 @@ package org.leetcode2maven.app;
 
 import org.leetcode2maven.biz.FileBiz;
 import org.leetcode2maven.biz.LeetCodeBiz;
+import org.leetcode2maven.biz.dto.leetcode.SingleClassCode;
 import org.leetcode2maven.model.Question;
 import org.leetcode2maven.repo.FileRepo;
 import org.leetcode2maven.repo.LeetCodeRepo;
@@ -25,19 +26,23 @@ public class GenerationManager {
         this.fileRepo = fileRepo;
     }
 
-    public void generateMavenProject(int questionId, File projectDir) throws IOException {
-        validate(questionId, projectDir);
-        fileRepo.createProjectDir(projectDir);
+    public void generateMavenProject(int questionId, File projectParentDir) throws IOException {
+        validate(questionId, projectParentDir);
+
 
         Question question = leetCodeRepo.getQuestionById(questionId);
+
+        String projectDirName = fileBiz.getProjectDirName(question);
+        File projectDir = new File(projectParentDir, projectDirName);
+        fileRepo.createProjectDir(projectDir);
 
         String pomFileContent = fileBiz.buildPomFile(question);
         fileRepo.savePomFile(projectDir, pomFileContent);
 
 
-        String javaCode = question.getJavaCode();
-        String className = leetCodeBiz.extractClassName(javaCode);
-        fileRepo.saveSolutionClass(projectDir, className, javaCode);
+        String codeSnippet = question.getJavaCode();
+        SingleClassCode code = leetCodeBiz.parseCodeSnippet(codeSnippet);
+        fileRepo.saveSolutionClass(projectDir, code.getClassName(), code.getSource());
 
         fileRepo.saveNotesFile(projectDir);
 
@@ -50,10 +55,6 @@ public class GenerationManager {
 
         if (projectDir == null) {
             throw new IllegalArgumentException("Please input projectDir");
-        }
-
-        if(projectDir.exists() && projectDir.listFiles().length > 0){
-            throw new IllegalStateException(projectDir + " is not empty.");
         }
     }
 }
