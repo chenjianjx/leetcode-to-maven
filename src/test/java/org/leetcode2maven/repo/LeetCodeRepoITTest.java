@@ -28,11 +28,4 @@ class LeetCodeRepoITTest {
                 },
                 question.getDefaultTestCases().toArray());
     }
-
-    @Test
-    void getQuestionById_lc876Bug(){
-        Question question = repo.getQuestionById(876);
-        assertEquals(876, question.getQuestionId());
-        assertEquals("middle-of-the-linked-list", question.getTitleSlug());
-    }
 }
