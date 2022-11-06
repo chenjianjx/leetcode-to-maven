@@ -17,6 +17,7 @@ public class LeetCodeSnippetVisitor extends Java8BaseVisitor {
 
 
     private String className;
+    private String methodName;
     private String supportingClassSourceWithComment;
 
     private final static Pattern SUPPORTING_CLASS_DECLARE_PATTERN = Pattern.compile(PUBLIC_CLASS_DECLARE_LINE_REGEX);
@@ -48,6 +49,14 @@ public class LeetCodeSnippetVisitor extends Java8BaseVisitor {
     }
 
     @Override
+    public Object visitMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) {
+        if(ctx.methodModifier(0).getText().equals("public")){
+            this.methodName = ctx.methodHeader().methodDeclarator().Identifier().getText();
+        }
+        return super.visitMethodDeclaration(ctx);
+    }
+
+    @Override
     public Object visitMethodBody(Java8Parser.MethodBodyContext ctx) {
         String text = ctx.getText();
         if (text.trim().equals("{}")) {
@@ -65,5 +74,9 @@ public class LeetCodeSnippetVisitor extends Java8BaseVisitor {
 
     public String getSupportingClassSourceWithComment() {
         return supportingClassSourceWithComment;
+    }
+
+    public String getMethodName() {
+        return methodName;
     }
 }

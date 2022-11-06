@@ -32,7 +32,7 @@ public class FileBiz {
             template.process(model, result);
             return result.toString();
         } catch (TemplateException | IOException e) {
-            throw new IllegalStateException("Failed to create the pom.xml file", e);
+            throw new IllegalStateException("Failed to build the pom.xml", e);
         }
     }
 

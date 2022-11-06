@@ -6,6 +6,7 @@ import lombok.Data;
 public class LeetCodeSnippetParseResult {
     private String className;
     private String source;
+    private String methodName;
     private String supportingClassName;
     private String supportingClassSource;
 

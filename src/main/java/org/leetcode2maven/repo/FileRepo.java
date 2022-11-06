@@ -25,13 +25,22 @@ public class FileRepo {
         FileUtils.write(javaFile, javaCode, DEFAULT_CHARSET);
     }
 
-    public void saveSupportingClass(File projectDir, String supportingClassName, String supportingClassSource) throws IOException {
+    public void saveSupportingClass(File projectDir, String className, String source) throws IOException {
         File codeDir = new File(projectDir, "src/main/java");
         codeDir.mkdirs();
 
-        File javaFile = new File(codeDir, supportingClassName + ".java");
-        FileUtils.write(javaFile, supportingClassSource, DEFAULT_CHARSET);
+        File javaFile = new File(codeDir, className + ".java");
+        FileUtils.write(javaFile, source, DEFAULT_CHARSET);
     }
+
+    public void saveUnitTestClass(File projectDir, String className, String source) throws IOException {
+        File codeDir = new File(projectDir, "src/test/java");
+        codeDir.mkdirs();
+
+        File javaFile = new File(codeDir, className + ".java");
+        FileUtils.write(javaFile, source, DEFAULT_CHARSET);
+    }
+
 
     public void savePomFile(File projectDir, String content) throws IOException {
         File pomFile = new File(projectDir, "pom.xml");
@@ -43,6 +52,7 @@ public class FileRepo {
         IOUtils.copy(this.getClass().getResource("/maven-project-template/notes.md"), destin);
 
     }
+
 
 
 }

@@ -25,7 +25,7 @@ class GenerationManagerITTest {
     @BeforeEach
     public void setUp() throws IOException {
 
-        LeetCodeBiz leetCodeBiz = new LeetCodeBiz();
+        LeetCodeBiz leetCodeBiz = new LeetCodeBiz(new FreemarkerTemplateFactory());
         LeetCodeRepo leetCodeRepo = new LeetCodeRepo(new LeetCodeHttpClient());
         FileRepo fileRepo = new FileRepo();
         FileBiz fileBiz = new FileBiz(new FreemarkerTemplateFactory());
