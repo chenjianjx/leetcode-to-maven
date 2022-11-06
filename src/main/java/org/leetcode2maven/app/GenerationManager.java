@@ -2,7 +2,7 @@ package org.leetcode2maven.app;
 
 import org.leetcode2maven.biz.FileBiz;
 import org.leetcode2maven.biz.LeetCodeBiz;
-import org.leetcode2maven.biz.dto.leetcode.SingleClassCode;
+import org.leetcode2maven.biz.dto.leetcode.LeetCodeSnippetParseResult;
 import org.leetcode2maven.model.Question;
 import org.leetcode2maven.repo.FileRepo;
 import org.leetcode2maven.repo.LeetCodeRepo;
@@ -26,7 +26,14 @@ public class GenerationManager {
         this.fileRepo = fileRepo;
     }
 
-    public void generateMavenProject(int questionId, File projectParentDir) throws IOException {
+    /**
+     *
+     * @param questionId
+     * @param projectParentDir
+     * @return the project dir
+     * @throws IOException
+     */
+    public File generateMavenProject(int questionId, File projectParentDir) throws IOException {
         validate(questionId, projectParentDir);
 
 
@@ -41,11 +48,15 @@ public class GenerationManager {
 
 
         String codeSnippet = question.getJavaCode();
-        SingleClassCode code = leetCodeBiz.parseCodeSnippet(codeSnippet);
-        fileRepo.saveSolutionClass(projectDir, code.getClassName(), code.getSource());
+        LeetCodeSnippetParseResult parseResult = leetCodeBiz.parseCodeSnippet(codeSnippet);
+        fileRepo.saveSolutionClass(projectDir, parseResult.getClassName(), parseResult.getSource());
+        if(parseResult.hasSupportingClass()){
+            fileRepo.saveSupportingClass(projectDir, parseResult.getSupportingClassName(), parseResult.getSupportingClassSource());
+        }
 
         fileRepo.saveNotesFile(projectDir);
 
+        return projectDir;
     }
 
     private static void validate(int questionId, File projectDir) {

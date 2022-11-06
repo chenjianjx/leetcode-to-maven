@@ -1,7 +1,5 @@
 package org.leetcode2maven.app;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leetcode2maven.biz.FileBiz;
@@ -17,49 +15,46 @@ import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.leetcode2maven.global.GlobalConstants.DEFAULT_CHARSET;
 
 class GenerationManagerITTest {
 
-    private GenerationManager generationManager;
+    GenerationManager generationManager;
+
+    File projectParentDir;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IOException {
 
         LeetCodeBiz leetCodeBiz = new LeetCodeBiz();
         LeetCodeRepo leetCodeRepo = new LeetCodeRepo(new LeetCodeHttpClient());
         FileRepo fileRepo = new FileRepo();
         FileBiz fileBiz = new FileBiz(new FreemarkerTemplateFactory());
         generationManager = new GenerationManager(leetCodeBiz, fileBiz, leetCodeRepo, fileRepo);
+
+        projectParentDir = Files.createTempDirectory("leetcode2maven-GenerationManagerITTest-").toFile();
+
     }
 
     @Test
-    public void generateMavenProject() throws IOException {
-        File parentDir = Files.createTempDirectory("leetcode2maven-GenerationManagerITTest-").toFile();
-        System.out.println("Project parent dir is " + parentDir);
+    public void generateMavenProject_plainQuestion() throws IOException {
 
+        File expectedProjectDir = new File(projectParentDir, "lc-1-two-sum");
+        assertEquals(expectedProjectDir, generationManager.generateMavenProject(1, projectParentDir));
+        System.out.println("Project dir is " + expectedProjectDir);
 
-        generationManager.generateMavenProject(1, parentDir);
+        assertTrue(new File(expectedProjectDir, "pom.xml").exists());
+        assertTrue(new File(expectedProjectDir, "src/main/java/Solution.java").exists());
+        assertTrue(new File(expectedProjectDir, "notes.md").exists());
 
-        File projectDir = new File(parentDir, "lc-1-two-sum");
+    }
 
-        File pomFile = new File(projectDir, "pom.xml");
-        assertTrue(pomFile.exists());
-        assertEquals(
-                IOUtils.toString(this.getClass().getResource("/leetcode-1-generated-pom.txt"), DEFAULT_CHARSET),
-                FileUtils.readFileToString(pomFile, DEFAULT_CHARSET)
-        );
+    @Test
+    public void generateMavenProject_questionWithSupportingClass() throws IOException {
 
-        File solutionFile = new File(projectDir, "src/main/java/Solution.java");
-        assertTrue(solutionFile.exists());
-        assertEquals(
-                IOUtils.toString(this.getClass().getResource("/leetcode-1-enhanced-code.txt"), DEFAULT_CHARSET),
-                FileUtils.readFileToString(solutionFile, DEFAULT_CHARSET)
-        );
+        File expectedProjectDir = new File(projectParentDir, "lc-235-lowest-common-ancestor-of-a-binary-search-tree");
+        assertEquals(expectedProjectDir, generationManager.generateMavenProject(235, projectParentDir));
+        System.out.println("Project dir is " + expectedProjectDir);
 
-
-        File notesFile = new File(projectDir, "notes.md");
-        assertTrue(notesFile.exists());
-
+        assertTrue(new File(expectedProjectDir, "src/main/java/TreeNode.java").exists());
     }
 }
