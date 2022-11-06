@@ -10,6 +10,8 @@
 
     <properties>
         <junit-jupiter.version>5.4.0</junit-jupiter.version>
+        <antlr4.version>4.9.3</antlr4.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
 
@@ -37,6 +39,24 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>${antlr4.version}</version>
+                <configuration>
+                    <listener>false</listener>
+                    <visitor>true</visitor>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
         </plugins>
     </build>
 
@@ -63,11 +83,15 @@
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
             <version>2.3.31</version>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4</artifactId>
+            <version>${antlr4.version}</version>
         </dependency>
 
     </dependencies>
