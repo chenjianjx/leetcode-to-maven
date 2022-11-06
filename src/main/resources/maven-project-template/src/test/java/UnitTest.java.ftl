@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.regex.*;
+import java.util.stream.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,7 +15,7 @@ class ${testClassName} {
     }
 
 
-    </#list> 
+    </#list>
 
     <#if utilMethods?seq_contains("printIntArray")>
     private void printIntArray(int[] array) {

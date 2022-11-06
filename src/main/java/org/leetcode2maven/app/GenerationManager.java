@@ -11,6 +11,9 @@ import org.leetcode2maven.repo.LeetCodeRepo;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Please use {@link GenerationManagerFactory#newInstance()} to create an instance
+ */
 public class GenerationManager {
 
     private final LeetCodeBiz leetCodeBiz;
