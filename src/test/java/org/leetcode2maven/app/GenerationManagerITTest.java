@@ -44,14 +44,14 @@ class GenerationManagerITTest {
         File pomFile = new File(dir, "pom.xml");
         assertTrue(pomFile.exists());
         assertEquals(
-                IOUtils.toString(this.getClass().getResource("/leetcode-1-pom.txt"), DEFAULT_CHARSET),
+                IOUtils.toString(this.getClass().getResource("/leetcode-1-generated-pom.txt"), DEFAULT_CHARSET),
                 FileUtils.readFileToString(pomFile, DEFAULT_CHARSET)
         );
 
         File solutionFile = new File(dir, "src/main/java/Solution.java");
         assertTrue(solutionFile.exists());
         assertEquals(
-                IOUtils.toString(this.getClass().getResource("/leetcode-1-code-snippet.txt"), DEFAULT_CHARSET),
+                IOUtils.toString(this.getClass().getResource("/leetcode-1-enhanced-code.txt"), DEFAULT_CHARSET),
                 FileUtils.readFileToString(solutionFile, DEFAULT_CHARSET)
         );
 

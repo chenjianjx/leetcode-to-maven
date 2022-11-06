@@ -10,6 +10,7 @@
 
     <properties>
         <junit-jupiter.version>5.4.0</junit-jupiter.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
 
