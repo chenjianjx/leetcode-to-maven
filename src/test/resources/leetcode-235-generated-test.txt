@@ -1,0 +1,26 @@
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class SolutionTest {
+
+    Solution solution = new Solution();
+
+    @Test
+    void case1() {
+        assertEquals(toTreeNode("6"), solution.lowestCommonAncestor(toTreeNode("[6,2,8,0,4,7,9,null,null,3,5]"), toTreeNode("2"), toTreeNode("8")));
+    }
+
+
+    @Test
+    void case2() {
+        assertEquals(toTreeNode("2"), solution.lowestCommonAncestor(toTreeNode("[6,2,8,0,4,7,9,null,null,3,5]"), toTreeNode("2"), toTreeNode("4")));
+    }
+
+
+    @Test
+    void case3() {
+        assertEquals(toTreeNode("2"), solution.lowestCommonAncestor(toTreeNode("[2,1]"), toTreeNode("2"), toTreeNode("1")));
+    }
+
+
+}

@@ -19,7 +19,9 @@ import org.leetode2maven.biz.support.antlr.Java8Parser;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -56,7 +58,7 @@ public class LeetCodeBiz {
 
         LeetCodeSnippetParseResult result = new LeetCodeSnippetParseResult();
         result.setClassName(visitor.getClassName());
-        result.setMethodName(visitor.getMethodName());
+        result.setMethod(visitor.getMethod());
         result.setSource(rewriter.getText());
         if (supportingClass != null) {
             result.setSupportingClassSource(supportingClass.getSource());
@@ -96,9 +98,13 @@ public class LeetCodeBiz {
         model.put("testClassName", testClassName);
         model.put("targetClassName", parseResult.getClassName());
         model.put("targetInstanceName", StringUtils.uncapitalize(parseResult.getClassName()));
-        model.put("methodName", parseResult.getMethodName());
+        model.put("methodName", parseResult.getMethod().getName());
 
-        model.put("testCases", question.getDefaultTestCases().stream().map(this::leetCodeCaseStringToUnitTestCaseString).collect(Collectors.toList()));
+        model.put("testCases", question.getDefaultTestCases().stream()
+                .map(testCase -> leetCodeCaseStringToUnitTestCaseString(parseResult.getMethod().getParameterTypes(),
+                        parseResult.getMethod().getReturnType(),
+                        testCase))
+                .collect(Collectors.toList()));
 
         String source;
         try {
@@ -116,12 +122,62 @@ public class LeetCodeBiz {
         return result;
     }
 
-    private Map<String, Object> leetCodeCaseStringToUnitTestCaseString(TestCase testCase) {
+    private Map<String, Object> leetCodeCaseStringToUnitTestCaseString(List<String> parameterTypes, String returnType, TestCase testCase) {
         Map<String, Object> result = new HashMap<>();
-        result.put("params", testCase.getInput());
-        result.put("expected", testCase.getExpected());
+        List<String> params = new ArrayList<>();
+        for (int paramIndex = 0; paramIndex < testCase.getInput().size(); paramIndex++) {
+            String dataString = testCase.getInput().get(paramIndex);
+            String dataType = paramIndex < parameterTypes.size() ? parameterTypes.get(paramIndex) : null;
+            params.add(testDataToJavaCode(dataType, dataString));
+        }
+        result.put("params", params);
+        result.put("expected", testDataToJavaCode(returnType, testCase.getExpected()));
         return result;
     }
+
+    /**
+     * e.g. [1,2] -> toIntArray("[1,2]")
+     *
+     * @param dataString
+     * @return
+     */
+    private String testDataToJavaCode(String dataType, String dataString) {
+        if (dataType == null) {
+            return dataString;
+        }
+        switch (dataType) {
+            case "boolean":
+            case "short":
+            case "int":
+            case "long":
+            case "float":
+            case "double":
+            case "Boolean":
+            case "Short":
+            case "Integer":
+            case "Long":
+            case "Float":
+            case "Double": {
+                return dataString;
+            }
+            case "String": {
+                return "" + dataString + "";
+            }
+
+            case "int[]": {
+                return String.format("toIntArray(\"%s\")", dataString);
+            }
+
+            case "TreeNode": {
+                return String.format("toTreeNode(\"%s\")", dataString);
+            }
+            default:
+                return dataString;
+        }
+
+    }
+
+
 }
 
 
