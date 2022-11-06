@@ -41,7 +41,7 @@ public class FileBiz {
     }
 
     private String getArtifactId(Question question) {
-        return "lc-" + question.getQuestionId() + "-" + question.getTitleSlug();
+        return "lc-" + question.getFrontendId() + "-" + question.getTitleSlug();
     }
 
 

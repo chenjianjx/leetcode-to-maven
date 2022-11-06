@@ -13,15 +13,15 @@ public class BatchGenTestMain {
 
     private final GenerationManager gm = new GenerationManagerFactory().newInstance();
 
-    private void batchGen(List<Integer> questionIds) throws IOException {
+    private void batchGen(List<Integer> frontendIdList) throws IOException {
         File projectParentDir = Files.createTempDirectory("leetcode2maven-BatchGenTestMain-").toFile();
         System.out.println("All projects will be under " + projectParentDir);
 
-        for (Integer questionId : questionIds) {
+        for (Integer frontendId : frontendIdList) {
             try {
-                gm.generateMavenProject(questionId, projectParentDir);
+                gm.generateMavenProject(frontendId, projectParentDir);
             } catch (Exception e) {
-                System.err.println("Failed to generate for question " + questionId);
+                System.err.println("Failed to generate for question " + frontendId);
                 e.printStackTrace();
             }
         }

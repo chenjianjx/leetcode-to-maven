@@ -25,37 +25,37 @@ public class LeetCodeRepo {
         this.leetCodeHttpClient = leetCodeHttpClient;
     }
 
-    private Map<Integer, String> idAndTitleSlugMap = new HashMap<>();
+    private Map<Integer, String> frontendIdAndTitleSlugMap = new HashMap<>();
 
     //TODO: periodically refresh
     private void refreshTitleSlugAndIdMap() {
         ProblemsResponse rawResponse = leetCodeHttpClient.doGet("/api/problems/all/", ProblemsResponse.class);
 
         Map<Integer, String> newMap = rawResponse.getStat_status_pairs().stream().collect(Collectors.toMap(
-                pair -> pair.getStat().getQuestion_id(),
+                pair -> pair.getStat().getFrontend_question_id(),
                 pair -> pair.getStat().getQuestion__title_slug()
         ));
 
         synchronized (this) {
-            idAndTitleSlugMap.clear();
-            idAndTitleSlugMap.putAll(newMap);
+            frontendIdAndTitleSlugMap.clear();
+            frontendIdAndTitleSlugMap.putAll(newMap);
         }
     }
 
-    public Question getQuestionById(int questionId) {
-        if (idAndTitleSlugMap.isEmpty()) {
+    public Question getQuestionByFrontendId(int frontendId) {
+        if (frontendIdAndTitleSlugMap.isEmpty()) {
             refreshTitleSlugAndIdMap();
         }
-        String titleSlug = this.idAndTitleSlugMap.get(questionId);
+        String titleSlug = this.frontendIdAndTitleSlugMap.get(frontendId);
         if (titleSlug == null) {
-            throw new IllegalArgumentException("Question id=" + questionId + " is not found");
+            throw new IllegalArgumentException("Question id=" + frontendId + " is not found");
         }
         return this.getQuestionByTitleSlug(titleSlug);
     }
 
     private Question getQuestionByTitleSlug(String titleSlug) {
 
-        String query = "query questionData($titleSlug: String!) { question(titleSlug: $titleSlug) {questionId titleSlug content codeSnippets{langSlug code} exampleTestcaseList} }";
+        String query = "query questionData($titleSlug: String!) { question(titleSlug: $titleSlug) {questionFrontendId titleSlug content codeSnippets{langSlug code} exampleTestcaseList} }";
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("titleSlug", titleSlug);
@@ -67,7 +67,7 @@ public class LeetCodeRepo {
 
     private Question toModel(QuestionNode questionNode) {
         Question question = new Question();
-        question.setQuestionId(questionNode.getQuestionId());
+        question.setFrontendId(questionNode.getQuestionFrontendId());
         question.setTitleSlug(questionNode.getTitleSlug());
         String javaCode = questionNode.getCodeSnippets().stream().filter(cs -> cs.getLangSlug().equals("java")).findFirst().get().getCode();
         question.setJavaCode(javaCode);
