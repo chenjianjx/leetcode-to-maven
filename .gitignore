@@ -1,3 +1,4 @@
 target/
 **/.DS_Store
 /src/main/java/non_in_git/
+/dependency-reduced-pom.xml
