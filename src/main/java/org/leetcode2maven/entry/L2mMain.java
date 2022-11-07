@@ -13,7 +13,7 @@ public class L2mMain {
         int questionFrontendId = -1;
 
         if(args.length == 0){
-            System.err.println("The command is: l2m $questionFrontendId #e.g. 876 in '876. Middle of the Linked List' ");
+            System.err.println("The command is: l2m $questionFrontendId # $questionFrontendId can be found on web, such as '876' in '876. Middle of the Linked List' ");
             return;
         }
 
@@ -26,6 +26,6 @@ public class L2mMain {
 
         GenerationManager gm = new GenerationManagerFactory().newInstance();
         File projectDir = gm.generateMavenProject(questionFrontendId, new File("."));
-        System.out.println("Project successfully generated at " + projectDir);
+        System.out.println("\n\nProject successfully generated at " + projectDir);
     }
 }

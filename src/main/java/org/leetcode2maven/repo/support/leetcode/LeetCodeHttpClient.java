@@ -17,7 +17,8 @@ public class LeetCodeHttpClient {
     public LeetCodeHttpClient() {
         Unirest.config().defaultBaseUrl("https://leetcode.com")
                 .setDefaultHeader("Content-Type", "application/json")
-                .setDefaultHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36");
+                .setDefaultHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
+                .cookieSpec("standard");
     }
 
     public <T> T graphQLQuery(String query, Map<String, Object> variables, Class<T> responseClass) {
