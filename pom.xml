@@ -6,7 +6,7 @@
 
     <groupId>com.github.chenjianjx</groupId>
     <artifactId>leetcode-to-maven</artifactId>
-    <version>0.90</version>
+    <version>0.91</version>
 
     <properties>
         <junit-jupiter.version>5.4.0</junit-jupiter.version>

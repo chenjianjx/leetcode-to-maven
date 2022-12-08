@@ -31,7 +31,7 @@
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <artifactId>junit-jupiter-engine</artifactId>
             <version>${r"${junit-jupiter.version}"}</version>
             <scope>test</scope>
         </dependency>
